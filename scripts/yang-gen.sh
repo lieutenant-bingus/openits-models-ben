@@ -183,7 +183,10 @@ normalize_go_header() {
         -e 's|by [^ ]*/github.com/openconfig/ygot|by github.com/openconfig/ygot|'
         -e "s|${ROOT_DIR}/||g"
         -e 's|[^[:space:]]*[\\/]yang[\\/]|yang/|g'
-        -e 's|^\t- yang;yang/ietf/\.\.\.$|\t- yang/ietf/...|'
+        # ygot path-list forms: "yang:yang/ietf/..." (Unix), "yang;yang/ietf/..."
+        # (some MSYS), or a collapsed "yang/ietf\..." (Windows backslash).
+        -e 's|^\t- yang[:;]yang/ietf/\.\.\.$|\t- yang/ietf/...|'
+        -e 's|^\t- yang/ietf\\.*$|\t- yang/ietf/...|'
         -e 's|^\t- .*[\\/]yang;.*[\\/]yang[\\/]ietf[\\/]\.\.\.$|\t- yang/ietf/...|'
     )
     if [ -n "$win_root" ]; then
