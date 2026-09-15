@@ -1,0 +1,21 @@
+{
+  "openits-signal-control-events:site-inventory-report": {
+    "kind": "openits-signal-control-types:sc-site-inventory-report",
+    "source-device-id": "lab-asc-01",
+    "sequence": "1",
+    "main-street": "Main St",
+    "second-street": "Second St",
+    "description": "047",
+    "latitude-e7": "339948344",
+    "longitude-e7": "-845295964",
+    "map-hex": "0012",
+    "map-message-id": 18,
+    "phase-approach": [
+      {
+        "phase-number": 1,
+        "approach": "NB"
+      }
+    ],
+    "occurred-at": "2026-09-15T16:30:00Z"
+  }
+}

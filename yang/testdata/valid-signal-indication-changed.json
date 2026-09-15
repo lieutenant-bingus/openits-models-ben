@@ -1,0 +1,11 @@
+{
+  "openits-signal-control-events:signal-indication-changed": {
+    "kind": "openits-signal-control-types:sc-signal-indication-changed",
+    "source-device-id": "lab-asc-01",
+    "sequence": "1",
+    "channel": 2,
+    "prior-color": "openits-signal-control-types:indication-color-red",
+    "current-color": "openits-signal-control-types:indication-color-green",
+    "occurred-at": "2026-09-15T16:30:00Z"
+  }
+}
