@@ -85,12 +85,30 @@ check_yang_files() {
 
 # Generate Go structs. ygot's Go backend does not support `notification`
 # statements, so exclude the notifications companion module. (Notifications
-# are carried by the generated per-event protobuf messages instead — see
+# are carried by the generated per-event protobuf messages instead ΓÇö see
 # tools/yang-proto-gen.)
 generate_go() {
     log_info "Generating Go code from openits YANG modules..."
     mkdir -p "$OUT_GO_DIR"
-    local yang_paths="$YANG_DIR:$YANG_DIR/ietf"
+
+    # Stage a CR-stripped copy of yang/. AutocrLF worktrees otherwise feed
+    # ygot descriptions/revisions with \r, which embeds into openits.go and
+    # fails `make check-gen` on Linux CI. Copy keeps uncommitted YANG edits.
+    local yang_stage
+    yang_stage=$(mktemp -d)
+    # shellcheck disable=SC2064
+    trap 'rm -rf "'"$yang_stage"'"' RETURN
+    mkdir -p "$yang_stage/yang"
+    cp -a "$YANG_DIR/." "$yang_stage/yang/"
+    # Also need ietf under yang/ietf ΓÇö already inside YANG_DIR copy.
+    local f
+    while IFS= read -r -d '' f; do
+        tr -d '\r' <"$f" >"$f.lf" && mv "$f.lf" "$f"
+    done < <(find "$yang_stage/yang" -type f -name '*.yang' -print0)
+    local yang_src="$yang_stage/yang"
+    log_info "Using CR-stripped YANG staging dir for ygot"
+
+    local yang_paths="$yang_src:$yang_src/ietf"
 
     generator \
         -path="$yang_paths" \
@@ -109,37 +127,37 @@ generate_go() {
         -include_schema \
         -ignore_unsupported \
         -exclude_modules=ietf-inet-types,ietf-yang-types,openits-device-diagnostics,openits-cabinet-power,openits-schedule,openits-v2x-radio,openits-v2x-messaging,openits-scms,openits-vehicle-detection,openits-zone-occupancy,openits-zone-occupancy-events,openits-dms-events,openits-ess-events,openits-rsu-events,openits-ramp-metering-events,openits-common-comm-health-events,openits-common-fault-events,openits-common-mode-events,openits-signal-control-events,openits-traffic-sensor-events,openits-reversible-lane-events,openits-perception-events,openits-cctv-events,openits-work-zone-events \
-        "$YANG_DIR/openits-types.yang" \
-        "$YANG_DIR/openits-device-diagnostics.yang" \
-        "$YANG_DIR/openits-cabinet-power.yang" \
-        "$YANG_DIR/openits-schedule.yang" \
-        "$YANG_DIR/openits-v2x-radio.yang" \
-        "$YANG_DIR/openits-v2x-messaging.yang" \
-        "$YANG_DIR/openits-v2x-radio-types.yang" \
-        "$YANG_DIR/openits-v2x-messaging-types.yang" \
-        "$YANG_DIR/openits-scms.yang" \
-        "$YANG_DIR/openits-vehicle-detection.yang" \
-        "$YANG_DIR/openits-zone-occupancy-types.yang" \
-        "$YANG_DIR/openits-zone-occupancy.yang" \
-        "$YANG_DIR/openits-zone-occupancy-events.yang" \
-        "$YANG_DIR/openits-work-zone-types.yang" \
-        "$YANG_DIR/openits-work-zone-events.yang" \
-        "$YANG_DIR/openits-signal-control-types.yang" \
-        "$YANG_DIR/openits-dms-types.yang" \
-        "$YANG_DIR/openits-ess-types.yang" \
-        "$YANG_DIR/openits-rsu-types.yang" \
-        "$YANG_DIR/openits-ramp-metering-types.yang" \
-        "$YANG_DIR/openits-nema-common.yang" \
-        "$YANG_DIR/openits-signal-control.yang" \
-        "$YANG_DIR/openits-rsu.yang" \
-        "$YANG_DIR/openits-dms.yang" \
-        "$YANG_DIR/openits-ess.yang" \
-        "$YANG_DIR/openits-ramp-metering.yang" \
-        "$YANG_DIR/openits-traffic-sensor.yang" \
-        "$YANG_DIR/openits-reversible-lane.yang" \
-        "$YANG_DIR/openits-perception.yang" \
-        "$YANG_DIR/openits-cctv-types.yang" \
-        "$YANG_DIR/openits-cctv.yang"
+        "$yang_src/openits-types.yang" \
+        "$yang_src/openits-device-diagnostics.yang" \
+        "$yang_src/openits-cabinet-power.yang" \
+        "$yang_src/openits-schedule.yang" \
+        "$yang_src/openits-v2x-radio.yang" \
+        "$yang_src/openits-v2x-messaging.yang" \
+        "$yang_src/openits-v2x-radio-types.yang" \
+        "$yang_src/openits-v2x-messaging-types.yang" \
+        "$yang_src/openits-scms.yang" \
+        "$yang_src/openits-vehicle-detection.yang" \
+        "$yang_src/openits-zone-occupancy-types.yang" \
+        "$yang_src/openits-zone-occupancy.yang" \
+        "$yang_src/openits-zone-occupancy-events.yang" \
+        "$yang_src/openits-work-zone-types.yang" \
+        "$yang_src/openits-work-zone-events.yang" \
+        "$yang_src/openits-signal-control-types.yang" \
+        "$yang_src/openits-dms-types.yang" \
+        "$yang_src/openits-ess-types.yang" \
+        "$yang_src/openits-rsu-types.yang" \
+        "$yang_src/openits-ramp-metering-types.yang" \
+        "$yang_src/openits-nema-common.yang" \
+        "$yang_src/openits-signal-control.yang" \
+        "$yang_src/openits-rsu.yang" \
+        "$yang_src/openits-dms.yang" \
+        "$yang_src/openits-ess.yang" \
+        "$yang_src/openits-ramp-metering.yang" \
+        "$yang_src/openits-traffic-sensor.yang" \
+        "$yang_src/openits-reversible-lane.yang" \
+        "$yang_src/openits-perception.yang" \
+        "$yang_src/openits-cctv-types.yang" \
+        "$yang_src/openits-cctv.yang"
 
     normalize_go_header "$OUT_GO_DIR/openits.go"
     log_info "Generated: $OUT_GO_DIR/openits.go"
@@ -153,8 +171,27 @@ generate_go() {
 # touched; real content drift is still caught.
 normalize_go_header() {
     local f="$1"
-    sed -e 's|by [^ ]*/github.com/openconfig/ygot|by github.com/openconfig/ygot|' \
-        -e "s|${ROOT_DIR}/||g" "$f" >"$f.tmp" && mv "$f.tmp" "$f"
+    # ygot embeds absolute input paths in the header. On Linux ROOT_DIR strip
+    # is enough; on Windows we also see C:/... and C:\...\Temp\tmp.XXX\yang
+    # staging paths (backslashes). Collapse every absolute .../yang[/\] form
+    # and the "Imported modules were sourced from" path list to repo-relative.
+    local win_root=""
+    if command -v cygpath >/dev/null 2>&1; then
+        win_root=$(cygpath -m "$ROOT_DIR" 2>/dev/null || true)
+    fi
+    local sed_args=(
+        -e 's|by [^ ]*/github.com/openconfig/ygot|by github.com/openconfig/ygot|'
+        -e "s|${ROOT_DIR}/||g"
+        -e 's|[^[:space:]]*[\\/]yang[\\/]|yang/|g'
+        -e 's|^\t- yang;yang/ietf/\.\.\.$|\t- yang/ietf/...|'
+        -e 's|^\t- .*[\\/]yang;.*[\\/]yang[\\/]ietf[\\/]\.\.\.$|\t- yang/ietf/...|'
+    )
+    if [ -n "$win_root" ]; then
+        sed_args+=(-e "s|${win_root}/||g")
+    fi
+    sed "${sed_args[@]}" "$f" >"$f.tmp" && mv "$f.tmp" "$f"
+    # Never ship CR in the generated Go.
+    tr -d '\r' <"$f" >"$f.tmp" && mv "$f.tmp" "$f"
 }
 
 main() {

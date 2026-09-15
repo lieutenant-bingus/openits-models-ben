@@ -17,8 +17,8 @@ import (
 // particular consumer, to discover which services and modules exist, what
 // event ce-types each service emits, which revisions have been published, and
 // where every revision's registry snapshot lives. It is the second neutral
-// emitter alongside asyncapi.go — same load-derive-marshal shape, same
-// byte-stability discipline — but it targets discovery/tooling rather than the
+// emitter alongside asyncapi.go ΓÇö same load-derive-marshal shape, same
+// byte-stability discipline ΓÇö but it targets discovery/tooling rather than the
 // NATS event API, so it belongs beside the registry it indexes
 // (schema-registry/index.json) rather than in the NATS binding profile.
 //
@@ -35,13 +35,13 @@ const indexStandard = "OpenITS"
 // indexFormatVersion is the schema version of index.json's OWN shape (not any
 // OpenITS module revision): a consumer keys its parser off this, and it is
 // bumped only when the index's structure changes incompatibly. It is a
-// constant — never a build timestamp — so it never perturbs byte-stability.
+// constant ΓÇö never a build timestamp ΓÇö so it never perturbs byte-stability.
 const indexFormatVersion = "1"
 
 // Index is the top-level index.json document.
 //
 // Field ordering note: encoding/json marshals struct fields in declaration
-// order, so the struct layout below IS the on-disk key order — deterministic
+// order, so the struct layout below IS the on-disk key order ΓÇö deterministic
 // without any post-processing. Registry is a map, which encoding/json emits
 // with sorted keys, so it is deterministic too.
 type Index struct {
@@ -51,7 +51,7 @@ type Index struct {
 	// One entry per OpenITS service/domain, sorted by slug.
 	Services []ServiceIndex `json:"services"`
 	// Shared/foundation modules (the types/common/nema layer, platform
-	// modules, and vendor/example type modules) — every loaded OpenITS
+	// modules, and vendor/example type modules) ΓÇö every loaded OpenITS
 	// module NOT scoped to a single service. Sorted by module name.
 	Foundation []ModuleIndex `json:"foundation"`
 	// Registry map: module name -> revision date -> that snapshot's file
@@ -68,8 +68,8 @@ type Index struct {
 // per-module breakdown plus service-level rollups.
 //
 // Revisions aggregation decision: this project versions each composing module
-// (core / -types / -events) on its OWN revision cadence — a -types change
-// bumps only the -types module, not the core — so there is no single "service
+// (core / -types / -events) on its OWN revision cadence ΓÇö a -types change
+// bumps only the -types module, not the core ΓÇö so there is no single "service
 // revision". The honest representation is therefore per-module: Modules
 // carries {name, namespace, revisions, refStd} for each composing module, and
 // the service-level Revisions/RefStd fields are a deduped, sorted ROLLUP
@@ -77,7 +77,7 @@ type Index struct {
 // want a coarse "what dates has anything in this service moved" view without
 // walking the sub-list. Namespace/Description normally come from the
 // service's CORE module (openits-<slug>), the module a consumer means by
-// "the dms model" — falling back to the service's -types then -events
+// "the dms model" ΓÇö falling back to the service's -types then -events
 // module ONLY for a service the catalog's service map marks coreless (no
 // core module by design). A service NOT marked coreless still errors out of
 // BuildIndex if it has no core module: see the fallback in BuildIndex.
@@ -113,7 +113,7 @@ type ModuleIndex struct {
 // it (see Index.Registry). mods is LoadModules's output; cat is BuildCatalog's.
 func BuildIndex(mods []*yang.Entry, cat []CeType, registryDir string) (*Index, error) {
 	// Group every loaded OpenITS module by the service it is scoped to (or
-	// "" for foundation). Only openits-* modules are described — vendored
+	// "" for foundation). Only openits-* modules are described ΓÇö vendored
 	// ietf-* imports are not part of the standard's published surface.
 	byService := map[string][]*yang.Entry{}
 	var foundation []*yang.Entry
@@ -142,10 +142,10 @@ func BuildIndex(mods []*yang.Entry, cat []CeType, registryDir string) (*Index, e
 	services := make([]ServiceIndex, 0, len(servicesList()))
 	for _, slug := range servicesList() {
 		// Namespace/Description normally come from the service's core
-		// config/state module (openits-<slug>) — see ServiceIndex's doc
+		// config/state module (openits-<slug>) ΓÇö see ServiceIndex's doc
 		// comment. A service the catalog's service map marks coreless is
 		// an events-only family with deliberately NO core module: a work
-		// zone is not a device (nothing to configure, nothing to poll —
+		// zone is not a device (nothing to configure, nothing to poll ΓÇö
 		// see openits-work-zone-events.yang's header), so
 		// "openits-work-zone" does not exist and never will. Only for a
 		// coreless service does absence of the core module fall back to
@@ -154,7 +154,7 @@ func BuildIndex(mods []*yang.Entry, cat []CeType, registryDir string) (*Index, e
 		// NOT marked coreless has no such fallback: since every entry in
 		// the map owns notifications, it always has an -events module, so
 		// falling back for it would let a genuinely missing core module
-		// — the taxonomy regression this check exists to catch — pass
+		// ΓÇö the taxonomy regression this check exists to catch ΓÇö pass
 		// silently.
 		core, ok := byName["openits-"+slug]
 		if !ok && serviceIsCoreless(slug) {
@@ -224,11 +224,11 @@ func BuildIndex(mods []*yang.Entry, cat []CeType, registryDir string) (*Index, e
 // moduleServiceSlug assigns an OpenITS module name to the service that owns it,
 // by longest-matching service slug: the module is either the service core
 // ("openits-<slug>") or a service sub-module ("openits-<slug>-..."). Longest
-// match matters for the same reason routeServiceSlug documents it — a
+// match matters for the same reason routeServiceSlug documents it ΓÇö a
 // hyphenated slug like "signal-control" must win over any shorter slug that is
 // a prefix of it. Returns ("", false) for a foundation/shared module
 // (openits-common-*, openits-types, openits-nema-common, openits-vendor-*,
-// openits-v2x-*, …) that maps to no single service.
+// openits-v2x-*, ΓÇª) that maps to no single service.
 func moduleServiceSlug(moduleName string) (string, bool) {
 	best := ""
 	for _, svc := range services {
@@ -244,7 +244,7 @@ func moduleServiceSlug(moduleName string) (string, bool) {
 // serviceIsCoreless reports whether slug's entry in the catalog's
 // authoritative service map is marked coreless (no core module by design;
 // see serviceInfo.coreless). Only BuildIndex's core-module fallback consults
-// this — every other consumer of the service map treats all slugs alike.
+// this ΓÇö every other consumer of the service map treats all slugs alike.
 func serviceIsCoreless(slug string) bool {
 	for _, svc := range services {
 		if svc.slug == slug {
@@ -296,8 +296,13 @@ func moduleNamespace(m *yang.Entry) string {
 }
 
 // moduleDescription returns the module's description text, or "".
+// CRLF from Windows/autocrlf YANG checkouts is normalized to LF so
+// schema-registry/index.json matches Linux CI (`make check-gen`).
 func moduleDescription(m *yang.Entry) string {
-	return m.Description
+	d := m.Description
+	d = strings.ReplaceAll(d, "\r\n", "\n")
+	d = strings.ReplaceAll(d, "\r", "")
+	return d
 }
 
 // moduleRevisions returns the module's declared revision dates, sorted
@@ -310,7 +315,7 @@ func moduleRevisions(m *yang.Entry) []string {
 	}
 	revs := make([]string, 0, len(mod.Revision))
 	for _, r := range mod.Revision {
-		revs = append(revs, r.Name)
+		revs = append(revs, strings.TrimRight(r.Name, "\r"))
 	}
 	sort.Strings(revs)
 	return revs
@@ -323,7 +328,7 @@ func moduleRevisions(m *yang.Entry) []string {
 //
 // Sourcing decision: module-level and revision-level `reference` statements
 // are exactly the normative-standard citations (e.g. "NTCIP 1203 v03",
-// "RFC 7950 section 11") — they name the external standards the module
+// "RFC 7950 section 11") ΓÇö they name the external standards the module
 // realizes or the evolution rules it follows. Leaf-level references are
 // intentionally NOT aggregated: they are per-node provenance, too granular for
 // a service/module-level "what standards does this implement" view, and would
@@ -492,7 +497,7 @@ func MarshalIndex(idx *Index) ([]byte, error) {
 // the neutral self-index to registryDir/index.json. registryDir doubles as
 // both the directory scanned for the registry map and the output location, so
 // the index lands beside the registry it describes. Mirrors GenerateAsyncAPI's
-// load-derive-write shape (asyncapi.go) — this is the function the -catalog
+// load-derive-write shape (asyncapi.go) ΓÇö this is the function the -catalog
 // CLI flag calls.
 func GenerateIndex(yangDir, registryDir string) error {
 	ms, mods, err := LoadModules(yangDir)
