@@ -2796,9 +2796,6 @@ messages:
         source_device_id: 1
         spat_hex: 8
         spat_message_id: 10
-    openits.signal_control.v1.SiteInventoryReportPhaseApproach:
-        approach: 2
-        phase_number: 1
     openits.signal_control.v1.Split:
         phase_number: 1
         split_mode: 3
