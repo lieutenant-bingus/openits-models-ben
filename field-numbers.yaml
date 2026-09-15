@@ -2527,6 +2527,7 @@ messages:
         observed_by: 7
         occurred_at: 6
         owner: 8
+        plan_id: 12
         sequence: 9
         source_device_id: 1
         uptime_seconds: 5
@@ -2586,6 +2587,9 @@ messages:
         config: 2
         phase_number: 1
         state: 3
+    openits.signal_control.v1.PhaseApproach:
+        approach: 2
+        phase_number: 1
     openits.signal_control.v1.PhaseConfig:
         barrier: 4
         crossing_distance_m: 10
@@ -2765,6 +2769,36 @@ messages:
         lrs_method: 4
         measure: 3
         route_designator: 1
+    openits.signal_control.v1.SignalIndicationChanged:
+        channel: 2
+        current_color: 4
+        kind: 99
+        observed_by: 6
+        occurred_at: 5
+        owner: 7
+        prior_color: 3
+        sequence: 8
+        source_device_id: 1
+    openits.signal_control.v1.SiteInventoryReport:
+        description: 4
+        kind: 99
+        latitude_e7: 5
+        longitude_e7: 6
+        main_street: 2
+        map_hex: 7
+        map_message_id: 9
+        observed_by: 13
+        occurred_at: 12
+        owner: 14
+        phase_approach: 11
+        second_street: 3
+        sequence: 15
+        source_device_id: 1
+        spat_hex: 8
+        spat_message_id: 10
+    openits.signal_control.v1.SiteInventoryReportPhaseApproach:
+        approach: 2
+        phase_number: 1
     openits.signal_control.v1.Split:
         phase_number: 1
         split_mode: 3

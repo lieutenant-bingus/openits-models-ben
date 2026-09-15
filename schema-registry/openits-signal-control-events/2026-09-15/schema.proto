@@ -187,42 +187,6 @@ message PreemptionEvent {
   string source_device_id = 1;
 }
 
-message SignalIndicationChanged {
-  string kind = 99;
-  uint32 channel = 2;
-  string prior_color = 3;
-  string current_color = 4;
-  string observed_by = 6;
-  google.protobuf.Timestamp occurred_at = 5;
-  string owner = 7;
-  uint64 sequence = 8;
-  string source_device_id = 1;
-}
-
-message SiteInventoryReport {
-  string kind = 99;
-  string main_street = 2;
-  string second_street = 3;
-  string description = 4;
-  int64 latitude_e7 = 5;
-  int64 longitude_e7 = 6;
-  string map_hex = 7;
-  string spat_hex = 8;
-  uint32 map_message_id = 9;
-  uint32 spat_message_id = 10;
-  repeated PhaseApproach phase_approach = 11;
-  string observed_by = 13;
-  google.protobuf.Timestamp occurred_at = 12;
-  string owner = 14;
-  uint64 sequence = 15;
-  string source_device_id = 1;
-}
-
-message PhaseApproach {
-  uint32 phase_number = 1;
-  string approach = 2;
-}
-
 message TsamModeChanged {
   string kind = 99;
   TsamEngagementState prior = 2;
@@ -302,5 +266,41 @@ message UnmappedEvent {
   uint64 sequence = 5;
   openits.types.v1.WireSource source = 100;
   string source_device_id = 6;
+}
+
+message SignalIndicationChanged {
+  string kind = 99;
+  uint32 channel = 2;
+  string prior_color = 3;
+  string current_color = 4;
+  string observed_by = 6;
+  google.protobuf.Timestamp occurred_at = 5;
+  string owner = 7;
+  uint64 sequence = 8;
+  string source_device_id = 1;
+}
+
+message SiteInventoryReport {
+  string kind = 99;
+  string main_street = 2;
+  string second_street = 3;
+  string description = 4;
+  int64 latitude_e7 = 5;
+  int64 longitude_e7 = 6;
+  string map_hex = 7;
+  string spat_hex = 8;
+  uint32 map_message_id = 9;
+  uint32 spat_message_id = 10;
+  repeated SiteInventoryReportPhaseApproach phase_approach = 11;
+  string observed_by = 13;
+  google.protobuf.Timestamp occurred_at = 12;
+  string owner = 14;
+  uint64 sequence = 15;
+  string source_device_id = 1;
+}
+
+message SiteInventoryReportPhaseApproach {
+  uint32 phase_number = 1;
+  string approach = 2;
 }
 

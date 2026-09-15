@@ -2,20 +2,15 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "additionalProperties": false,
   "properties": {
-    "flash-active": {
-      "type": "boolean"
+    "channel": {
+      "maximum": 4294967295,
+      "minimum": 1,
+      "type": "integer"
     },
-    "flash-cause": {
+    "current-color": {
       "type": "string"
     },
     "kind": {
-      "type": "string"
-    },
-    "last-mode-change": {
-      "format": "date-time",
-      "type": "string"
-    },
-    "mode": {
       "type": "string"
     },
     "observed-by": {
@@ -31,10 +26,8 @@
     "owner": {
       "type": "string"
     },
-    "plan-id": {
-      "maximum": 255,
-      "minimum": 1,
-      "type": "integer"
+    "prior-color": {
+      "type": "string"
     },
     "sequence": {
       "type": "string"
@@ -44,12 +37,11 @@
       "minLength": 1,
       "pattern": "^([a-zA-Z0-9_-]+)$",
       "type": "string"
-    },
-    "uptime-seconds": {
-      "type": "string"
     }
   },
   "required": [
+    "channel",
+    "current-color",
     "kind",
     "occurred-at",
     "sequence",

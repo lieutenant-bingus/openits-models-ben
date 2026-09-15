@@ -390,6 +390,18 @@ channels:
             openits.signal-control.preemption-event.v1:
                 $ref: '#/components/messages/openits.signal-control.preemption-event.v1'
         title: signal-control — preemption-event
+    openits.signal-control.signal-indication-changed.v1:
+        address: openits.signal-control.signal-indication-changed.v1
+        messages:
+            openits.signal-control.signal-indication-changed.v1:
+                $ref: '#/components/messages/openits.signal-control.signal-indication-changed.v1'
+        title: signal-control — signal-indication-changed
+    openits.signal-control.site-inventory-report.v1:
+        address: openits.signal-control.site-inventory-report.v1
+        messages:
+            openits.signal-control.site-inventory-report.v1:
+                $ref: '#/components/messages/openits.signal-control.site-inventory-report.v1'
+        title: signal-control — site-inventory-report
     openits.signal-control.tsam-mode-changed.v1:
         address: openits.signal-control.tsam-mode-changed.v1
         messages:
@@ -5884,6 +5896,10 @@ components:
                             type: string
                         owner:
                             type: string
+                        plan-id:
+                            maximum: 255
+                            minimum: 1
+                            type: integer
                         sequence:
                             type: string
                         source-device-id:
@@ -6580,6 +6596,172 @@ components:
                 schemaFormat: application/schema+json;version=draft-2020-12
             summary: signal-control.preemption-event
             title: openits.signal-control.preemption-event.v1
+        openits.signal-control.signal-indication-changed.v1:
+            contentType: application/protobuf
+            headers:
+                properties:
+                    ce-datacontenttype:
+                        const: application/protobuf
+                        type: string
+                    ce-id:
+                        description: Event identifier, unique within the source.
+                        type: string
+                    ce-source:
+                        description: CloudEvents source URI identifying the emitting device or service instance.
+                        type: string
+                    ce-specversion:
+                        const: "1.0"
+                        type: string
+                    ce-time:
+                        format: date-time
+                        type: string
+                    ce-type:
+                        const: openits.signal-control.signal-indication-changed.v1
+                        type: string
+                    traceparent:
+                        description: W3C Trace Context. Optional; recommended.
+                        type: string
+                type: object
+            name: openits.signal-control.signal-indication-changed.v1
+            payload:
+                schema:
+                    $schema: https://json-schema.org/draft/2020-12/schema
+                    additionalProperties: false
+                    properties:
+                        channel:
+                            maximum: 4294967295
+                            minimum: 1
+                            type: integer
+                        current-color:
+                            type: string
+                        kind:
+                            type: string
+                        observed-by:
+                            maxLength: 64
+                            minLength: 1
+                            pattern: ^([a-zA-Z0-9_-]+)$
+                            type: string
+                        occurred-at:
+                            format: date-time
+                            type: string
+                        owner:
+                            type: string
+                        prior-color:
+                            type: string
+                        sequence:
+                            type: string
+                        source-device-id:
+                            maxLength: 64
+                            minLength: 1
+                            pattern: ^([a-zA-Z0-9_-]+)$
+                            type: string
+                    required:
+                        - channel
+                        - current-color
+                        - kind
+                        - occurred-at
+                        - sequence
+                        - source-device-id
+                    type: object
+                schemaFormat: application/schema+json;version=draft-2020-12
+            summary: signal-control.signal-indication-changed
+            title: openits.signal-control.signal-indication-changed.v1
+        openits.signal-control.site-inventory-report.v1:
+            contentType: application/protobuf
+            headers:
+                properties:
+                    ce-datacontenttype:
+                        const: application/protobuf
+                        type: string
+                    ce-id:
+                        description: Event identifier, unique within the source.
+                        type: string
+                    ce-source:
+                        description: CloudEvents source URI identifying the emitting device or service instance.
+                        type: string
+                    ce-specversion:
+                        const: "1.0"
+                        type: string
+                    ce-time:
+                        format: date-time
+                        type: string
+                    ce-type:
+                        const: openits.signal-control.site-inventory-report.v1
+                        type: string
+                    traceparent:
+                        description: W3C Trace Context. Optional; recommended.
+                        type: string
+                type: object
+            name: openits.signal-control.site-inventory-report.v1
+            payload:
+                schema:
+                    $schema: https://json-schema.org/draft/2020-12/schema
+                    additionalProperties: false
+                    properties:
+                        description:
+                            type: string
+                        kind:
+                            type: string
+                        latitude-e7:
+                            type: string
+                        longitude-e7:
+                            type: string
+                        main-street:
+                            type: string
+                        map-hex:
+                            type: string
+                        map-message-id:
+                            maximum: 65535
+                            minimum: 0
+                            type: integer
+                        observed-by:
+                            maxLength: 64
+                            minLength: 1
+                            pattern: ^([a-zA-Z0-9_-]+)$
+                            type: string
+                        occurred-at:
+                            format: date-time
+                            type: string
+                        owner:
+                            type: string
+                        phase-approach:
+                            items:
+                                additionalProperties: false
+                                properties:
+                                    approach:
+                                        type: string
+                                    phase-number:
+                                        maximum: 40
+                                        minimum: 1
+                                        type: integer
+                                required:
+                                    - approach
+                                type: object
+                            type: array
+                        second-street:
+                            type: string
+                        sequence:
+                            type: string
+                        source-device-id:
+                            maxLength: 64
+                            minLength: 1
+                            pattern: ^([a-zA-Z0-9_-]+)$
+                            type: string
+                        spat-hex:
+                            type: string
+                        spat-message-id:
+                            maximum: 65535
+                            minimum: 0
+                            type: integer
+                    required:
+                        - kind
+                        - occurred-at
+                        - sequence
+                        - source-device-id
+                    type: object
+                schemaFormat: application/schema+json;version=draft-2020-12
+            summary: signal-control.site-inventory-report
+            title: openits.signal-control.site-inventory-report.v1
         openits.signal-control.tsam-mode-changed.v1:
             contentType: application/protobuf
             headers:
@@ -8372,6 +8554,20 @@ operations:
         messages:
             - $ref: '#/channels/openits.signal-control.preemption-event.v1/messages/openits.signal-control.preemption-event.v1'
         summary: Consume openits.signal-control.preemption-event.v1
+    consume_openits.signal-control.signal-indication-changed.v1:
+        action: receive
+        channel:
+            $ref: '#/channels/openits.signal-control.signal-indication-changed.v1'
+        messages:
+            - $ref: '#/channels/openits.signal-control.signal-indication-changed.v1/messages/openits.signal-control.signal-indication-changed.v1'
+        summary: Consume openits.signal-control.signal-indication-changed.v1
+    consume_openits.signal-control.site-inventory-report.v1:
+        action: receive
+        channel:
+            $ref: '#/channels/openits.signal-control.site-inventory-report.v1'
+        messages:
+            - $ref: '#/channels/openits.signal-control.site-inventory-report.v1/messages/openits.signal-control.site-inventory-report.v1'
+        summary: Consume openits.signal-control.site-inventory-report.v1
     consume_openits.signal-control.tsam-mode-changed.v1:
         action: receive
         channel:
@@ -8911,6 +9107,20 @@ operations:
         messages:
             - $ref: '#/channels/openits.signal-control.preemption-event.v1/messages/openits.signal-control.preemption-event.v1'
         summary: Publish openits.signal-control.preemption-event.v1
+    publish_openits.signal-control.signal-indication-changed.v1:
+        action: send
+        channel:
+            $ref: '#/channels/openits.signal-control.signal-indication-changed.v1'
+        messages:
+            - $ref: '#/channels/openits.signal-control.signal-indication-changed.v1/messages/openits.signal-control.signal-indication-changed.v1'
+        summary: Publish openits.signal-control.signal-indication-changed.v1
+    publish_openits.signal-control.site-inventory-report.v1:
+        action: send
+        channel:
+            $ref: '#/channels/openits.signal-control.site-inventory-report.v1'
+        messages:
+            - $ref: '#/channels/openits.signal-control.site-inventory-report.v1/messages/openits.signal-control.site-inventory-report.v1'
+        summary: Publish openits.signal-control.site-inventory-report.v1
     publish_openits.signal-control.tsam-mode-changed.v1:
         action: send
         channel:

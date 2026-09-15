@@ -2,21 +2,28 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "additionalProperties": false,
   "properties": {
-    "flash-active": {
-      "type": "boolean"
-    },
-    "flash-cause": {
+    "description": {
       "type": "string"
     },
     "kind": {
       "type": "string"
     },
-    "last-mode-change": {
-      "format": "date-time",
+    "latitude-e7": {
       "type": "string"
     },
-    "mode": {
+    "longitude-e7": {
       "type": "string"
+    },
+    "main-street": {
+      "type": "string"
+    },
+    "map-hex": {
+      "type": "string"
+    },
+    "map-message-id": {
+      "maximum": 65535,
+      "minimum": 0,
+      "type": "integer"
     },
     "observed-by": {
       "maxLength": 64,
@@ -31,10 +38,28 @@
     "owner": {
       "type": "string"
     },
-    "plan-id": {
-      "maximum": 255,
-      "minimum": 1,
-      "type": "integer"
+    "phase-approach": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "approach": {
+            "type": "string"
+          },
+          "phase-number": {
+            "maximum": 40,
+            "minimum": 1,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "approach"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "second-street": {
+      "type": "string"
     },
     "sequence": {
       "type": "string"
@@ -45,8 +70,13 @@
       "pattern": "^([a-zA-Z0-9_-]+)$",
       "type": "string"
     },
-    "uptime-seconds": {
+    "spat-hex": {
       "type": "string"
+    },
+    "spat-message-id": {
+      "maximum": 65535,
+      "minimum": 0,
+      "type": "integer"
     }
   },
   "required": [

@@ -736,7 +736,8 @@
         "2026-07-17",
         "2026-07-21",
         "2026-08-05",
-        "2026-08-23"
+        "2026-08-23",
+        "2026-09-15"
       ],
       "events": [
         "openits.signal-control.comm-health-event.v1",
@@ -755,6 +756,8 @@
         "openits.signal-control.preemption-activated.v1",
         "openits.signal-control.preemption-cleared.v1",
         "openits.signal-control.preemption-event.v1",
+        "openits.signal-control.signal-indication-changed.v1",
+        "openits.signal-control.site-inventory-report.v1",
         "openits.signal-control.tsam-mode-changed.v1",
         "openits.signal-control.tsam-recommendation-applied.v1",
         "openits.signal-control.tsp-event.v1",
@@ -864,7 +867,8 @@
           "namespace": "urn:openits:yang:signal-control-events",
           "revisions": [
             "2026-07-14",
-            "2026-07-21"
+            "2026-07-21",
+            "2026-09-15"
           ],
           "refStd": [
             "ATSPM Indiana enumeration",
@@ -885,7 +889,8 @@
             "2026-07-13",
             "2026-07-14",
             "2026-07-21",
-            "2026-08-05"
+            "2026-08-05",
+            "2026-09-15"
           ],
           "refStd": [
             "ATSPM Indiana enumeration (HR event-code vocabulary)",
@@ -2044,6 +2049,13 @@
         "openits-signal-control-events/2026-07-21/schema.json",
         "openits-signal-control-events/2026-07-21/schema.proto",
         "openits-signal-control-events/2026-07-21/schema.yang"
+      ],
+      "2026-09-15": [
+        "openits-signal-control-events/2026-09-15/MANIFEST.json",
+        "openits-signal-control-events/2026-09-15/README.md",
+        "openits-signal-control-events/2026-09-15/schema.json",
+        "openits-signal-control-events/2026-09-15/schema.proto",
+        "openits-signal-control-events/2026-09-15/schema.yang"
       ]
     },
     "openits-signal-control-fault-events": {
@@ -2176,6 +2188,11 @@
         "openits-signal-control-types/2026-08-05/MANIFEST.json",
         "openits-signal-control-types/2026-08-05/README.md",
         "openits-signal-control-types/2026-08-05/schema.yang"
+      ],
+      "2026-09-15": [
+        "openits-signal-control-types/2026-09-15/MANIFEST.json",
+        "openits-signal-control-types/2026-09-15/README.md",
+        "openits-signal-control-types/2026-09-15/schema.yang"
       ]
     },
     "openits-traffic-sensor": {
