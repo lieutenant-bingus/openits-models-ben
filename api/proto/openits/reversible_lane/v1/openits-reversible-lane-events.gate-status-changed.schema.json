@@ -43,9 +43,6 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "additionalProperties": false,
   "properties": {
-    "control-source": {
-      "type": "string"
-    },
     "gate-id": {
       "maxLength": 64,
       "minLength": 1,
@@ -79,6 +76,9 @@
         "opening",
         "unknown"
       ],
+      "type": "string"
+    },
+    "previous-operating-mode": {
       "type": "string"
     },
     "previous-position": {

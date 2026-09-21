@@ -8,21 +8,19 @@ import "google/protobuf/timestamp.proto";
 import "openits/reversible_lane/v1/types.proto";
 import "openits/types/v1/types.proto";
 
-message GatePositionChanged {
-  reserved 3;
-  reserved "new_position";
+message GateStatusChanged {
   string kind = 99;
   string gate_id = 1;
   optional GatePosition previous_position = 2;
-  optional string control_source = 11;
-  optional string observed_by = 4;
-  google.protobuf.Timestamp occurred_at = 5;
-  optional string operating_mode = 9;
-  optional string owner = 6;
-  GatePosition position = 10;
-  uint64 sequence = 7;
+  GatePosition position = 3;
+  optional string previous_operating_mode = 4;
+  optional string operating_mode = 5;
+  optional string observed_by = 6;
+  google.protobuf.Timestamp occurred_at = 7;
+  optional string owner = 8;
+  uint64 sequence = 9;
   openits.types.v1.WireSource source = 100;
-  string source_device_id = 8;
+  string source_device_id = 10;
 }
 
 message LaneStateChanged {

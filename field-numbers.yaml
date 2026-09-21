@@ -1521,6 +1521,19 @@ messages:
         measured_at: 1
         operating_mode: 2
         position: 3
+    openits.reversible_lane.v1.GateStatusChanged:
+        gate_id: 1
+        kind: 99
+        observed_by: 6
+        occurred_at: 7
+        operating_mode: 5
+        owner: 8
+        position: 3
+        previous_operating_mode: 4
+        previous_position: 2
+        sequence: 9
+        source: 100
+        source_device_id: 10
     openits.reversible_lane.v1.Gates:
         gate: 1
     openits.reversible_lane.v1.Interlock:

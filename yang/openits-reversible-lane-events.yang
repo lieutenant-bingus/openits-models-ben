@@ -31,17 +31,17 @@ module openits-reversible-lane-events {
 
   revision 2026-09-16 {
     description
-      "Add gate-position-changed for a modelled gate, not a status
-       word. Payload uses the shared gate-position-state grouping
-       (position, operating-mode, control-source), kind is constrained
-       to the position-change sub-base, and arc-it-flow cites TM16
-       reversible lane status. No gate-mode-changed: per-gate mode is
-       a leaf on that grouping, not a private notification beside
-       mode-changed. gate-id is a plain identifier the consumer
-       resolves against the gates list. The live container path is
-       gates/gate/operation.";
+      "Add gate-status-changed for one gate's position or operating-mode
+       transition. Kind is constrained to
+       rl-gate-status-change-event-kind; payload carries gate-id,
+       previous/current position, and previous/current operating-mode
+       inline (no shared grouping). arc-it-flow cites TM16 reversible
+       lane status. gate-id is a plain identifier; this service has no
+       gate list. A per-gate mode transition cannot ride the shared
+       mode-changed event, which keys only on source-device-id.";
     reference
-      "docs/06-extension-model.md; docs/reference/yang-reference-conventions.md.";
+      "RFC 7950 section 11; MUTCD 11th ed. Chapter 4M; ARC-IT 9.1 TM16;
+       docs/06-extension-model.md; docs/reference/yang-reference-conventions.md.";
   }
 
   revision 2026-09-08 {
@@ -268,33 +268,28 @@ module openits-reversible-lane-events {
     uses openits-types:wire-source;
   }
 
-  notification gate-position-changed {
+  notification gate-status-changed {
     openits-types:arc-it-flow
       "ITS Roadway Equipment -> TMC : reversible lane status";
     description
-      "One gate's position changed. What counts as a change is exactly
+      "One gate's status changed. What counts as a change is exactly
        the identities under
-       openits-reversible-lane-types:reversible-lane-gate-position-change-event-kind.
-       A measured-at tick with the same position is not an event.
+       openits-reversible-lane-types:rl-gate-status-change-event-kind:
+       a position transition, or a mode transition. A repeated reading
+       with no transition is not an event.
 
-       Payload leaves come from the shared gate-position-state
-       grouping (position, operating-mode, control-source). The live
-       container at openits-reversible-lane gates/gate/operation is a
-       strict superset of this payload: it also carries open-inhibited
-       and close-inhibited, which are deliberately not on this
-       notification. gate-agreement evaluates against that container,
-       not this bus. previous-position is the transition fact and is
-       not on the grouping. gate-id names an entry in that list; a
-       consumer that starts mid-stream recovers current condition from
-       the list, not by replaying events.
+       One gate per event. gate-id is a plain identifier, not a
+       leafref: an event is self-contained, and a consumer resolves it
+       against its own inventory out of band. This service has no gate
+       list today, so a consumer starting mid-stream learns current
+       condition from the first event per gate, not by replay.
 
        Wire-source is present when the reading was decoded from a
-       facility register map. One gate per event. Per-gate mode is a
-       leaf of the grouping, not a separate notification.";
+       facility register map.";
 
     leaf kind {
       type identityref {
-        base openits-reversible-lane-types:reversible-lane-gate-position-change-event-kind;
+        base openits-reversible-lane-types:rl-gate-status-change-event-kind;
       }
       mandatory true;
       description
@@ -309,24 +304,42 @@ module openits-reversible-lane-events {
       }
       mandatory true;
       description
-        "The configured gate whose position changed. A plain
-         identifier rather than a leafref: an event is
-         self-contained, and a consumer resolves it against
-         gates/gate/config (or its own inventory) out of band.";
+        "The gate whose status changed, unique within the reporting
+         device. Mandatory: an event that cannot name its gate is not
+         actionable on a cabinet carrying many of them.";
     }
     leaf previous-position {
       type openits-reversible-lane-types:gate-position;
       description
-        "Position before the change. Absent on a first report.";
+        "Position before the change. Absent on a first report, and
+         absent when kind is rl-gate-mode-changed.";
     }
-    uses openits-reversible-lane-types:gate-position-state {
-      refine "position" {
-        mandatory true;
-        description
-          "Position after the change. Mandatory here, though optional
-           in the live state the same grouping describes, because a
-           position-change event that omits it has no meaning.";
+    leaf position {
+      type openits-reversible-lane-types:gate-position;
+      mandatory true;
+      description
+        "Position after the change. Mandatory on every kind: a mode
+         transition is still reported by a device that knows where its
+         gate is, and a consumer must never have to infer position
+         from a previous event.";
+    }
+    leaf previous-operating-mode {
+      type identityref {
+        base openits-reversible-lane-types:reversible-lane-gate-mode;
       }
+      description
+        "Operating mode before the change. Absent on a first report,
+         and absent when kind is rl-gate-position-changed.";
+    }
+    leaf operating-mode {
+      type identityref {
+        base openits-reversible-lane-types:reversible-lane-gate-mode;
+      }
+      description
+        "Operating mode after the change. Absent when the producer's
+         interface does not report mode. Reports a property of the
+         gate, not of the link to it: an unread gate leaves this
+         absent rather than claiming offline.";
     }
 
     uses openits-types:wire-source;

@@ -1,0 +1,17 @@
+{
+  "openits-reversible-lane-events:gate-status-changed": {
+    "kind": "openits-reversible-lane-types:rl-gate-mode-changed",
+    "source-device-id": "acs-demo-1",
+    "occurred-at": "2026-09-16T16:05:00Z",
+    "sequence": "2",
+    "gate-id": "WG-2",
+    "position": "closed",
+    "previous-operating-mode": "openits-reversible-lane-types:reversible-lane-gate-mode-automatic",
+    "operating-mode": "openits-reversible-lane-types:reversible-lane-gate-mode-manual-non-interlocked",
+    "source": {
+      "decoder": "srtp",
+      "register": "%R00102",
+      "register-value": "0x0023"
+    }
+  }
+}

@@ -23,38 +23,38 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type GatePositionChanged struct {
-	state            protoimpl.MessageState `protogen:"open.v1"`
-	Kind             string                 `protobuf:"bytes,99,opt,name=kind,proto3" json:"kind,omitempty"`
-	GateId           string                 `protobuf:"bytes,1,opt,name=gate_id,json=gateId,proto3" json:"gate_id,omitempty"`
-	PreviousPosition *GatePosition          `protobuf:"varint,2,opt,name=previous_position,json=previousPosition,proto3,enum=openits.reversible_lane.v1.GatePosition,oneof" json:"previous_position,omitempty"`
-	ControlSource    *string                `protobuf:"bytes,11,opt,name=control_source,json=controlSource,proto3,oneof" json:"control_source,omitempty"`
-	ObservedBy       *string                `protobuf:"bytes,4,opt,name=observed_by,json=observedBy,proto3,oneof" json:"observed_by,omitempty"`
-	OccurredAt       *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=occurred_at,json=occurredAt,proto3" json:"occurred_at,omitempty"`
-	OperatingMode    *string                `protobuf:"bytes,9,opt,name=operating_mode,json=operatingMode,proto3,oneof" json:"operating_mode,omitempty"`
-	Owner            *string                `protobuf:"bytes,6,opt,name=owner,proto3,oneof" json:"owner,omitempty"`
-	Position         GatePosition           `protobuf:"varint,10,opt,name=position,proto3,enum=openits.reversible_lane.v1.GatePosition" json:"position,omitempty"`
-	Sequence         uint64                 `protobuf:"varint,7,opt,name=sequence,proto3" json:"sequence,omitempty"`
-	Source           *v1.WireSource         `protobuf:"bytes,100,opt,name=source,proto3" json:"source,omitempty"`
-	SourceDeviceId   string                 `protobuf:"bytes,8,opt,name=source_device_id,json=sourceDeviceId,proto3" json:"source_device_id,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+type GateStatusChanged struct {
+	state                 protoimpl.MessageState `protogen:"open.v1"`
+	Kind                  string                 `protobuf:"bytes,99,opt,name=kind,proto3" json:"kind,omitempty"`
+	GateId                string                 `protobuf:"bytes,1,opt,name=gate_id,json=gateId,proto3" json:"gate_id,omitempty"`
+	PreviousPosition      *GatePosition          `protobuf:"varint,2,opt,name=previous_position,json=previousPosition,proto3,enum=openits.reversible_lane.v1.GatePosition,oneof" json:"previous_position,omitempty"`
+	Position              GatePosition           `protobuf:"varint,3,opt,name=position,proto3,enum=openits.reversible_lane.v1.GatePosition" json:"position,omitempty"`
+	PreviousOperatingMode *string                `protobuf:"bytes,4,opt,name=previous_operating_mode,json=previousOperatingMode,proto3,oneof" json:"previous_operating_mode,omitempty"`
+	OperatingMode         *string                `protobuf:"bytes,5,opt,name=operating_mode,json=operatingMode,proto3,oneof" json:"operating_mode,omitempty"`
+	ObservedBy            *string                `protobuf:"bytes,6,opt,name=observed_by,json=observedBy,proto3,oneof" json:"observed_by,omitempty"`
+	OccurredAt            *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=occurred_at,json=occurredAt,proto3" json:"occurred_at,omitempty"`
+	Owner                 *string                `protobuf:"bytes,8,opt,name=owner,proto3,oneof" json:"owner,omitempty"`
+	Sequence              uint64                 `protobuf:"varint,9,opt,name=sequence,proto3" json:"sequence,omitempty"`
+	Source                *v1.WireSource         `protobuf:"bytes,100,opt,name=source,proto3" json:"source,omitempty"`
+	SourceDeviceId        string                 `protobuf:"bytes,10,opt,name=source_device_id,json=sourceDeviceId,proto3" json:"source_device_id,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
 }
 
-func (x *GatePositionChanged) Reset() {
-	*x = GatePositionChanged{}
+func (x *GateStatusChanged) Reset() {
+	*x = GateStatusChanged{}
 	mi := &file_openits_reversible_lane_v1_events_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GatePositionChanged) String() string {
+func (x *GateStatusChanged) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GatePositionChanged) ProtoMessage() {}
+func (*GateStatusChanged) ProtoMessage() {}
 
-func (x *GatePositionChanged) ProtoReflect() protoreflect.Message {
+func (x *GateStatusChanged) ProtoReflect() protoreflect.Message {
 	mi := &file_openits_reversible_lane_v1_events_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -66,89 +66,89 @@ func (x *GatePositionChanged) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GatePositionChanged.ProtoReflect.Descriptor instead.
-func (*GatePositionChanged) Descriptor() ([]byte, []int) {
+// Deprecated: Use GateStatusChanged.ProtoReflect.Descriptor instead.
+func (*GateStatusChanged) Descriptor() ([]byte, []int) {
 	return file_openits_reversible_lane_v1_events_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *GatePositionChanged) GetKind() string {
+func (x *GateStatusChanged) GetKind() string {
 	if x != nil {
 		return x.Kind
 	}
 	return ""
 }
 
-func (x *GatePositionChanged) GetGateId() string {
+func (x *GateStatusChanged) GetGateId() string {
 	if x != nil {
 		return x.GateId
 	}
 	return ""
 }
 
-func (x *GatePositionChanged) GetPreviousPosition() GatePosition {
+func (x *GateStatusChanged) GetPreviousPosition() GatePosition {
 	if x != nil && x.PreviousPosition != nil {
 		return *x.PreviousPosition
 	}
 	return GatePosition_GATE_POSITION_UNKNOWN
 }
 
-func (x *GatePositionChanged) GetControlSource() string {
-	if x != nil && x.ControlSource != nil {
-		return *x.ControlSource
-	}
-	return ""
-}
-
-func (x *GatePositionChanged) GetObservedBy() string {
-	if x != nil && x.ObservedBy != nil {
-		return *x.ObservedBy
-	}
-	return ""
-}
-
-func (x *GatePositionChanged) GetOccurredAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.OccurredAt
-	}
-	return nil
-}
-
-func (x *GatePositionChanged) GetOperatingMode() string {
-	if x != nil && x.OperatingMode != nil {
-		return *x.OperatingMode
-	}
-	return ""
-}
-
-func (x *GatePositionChanged) GetOwner() string {
-	if x != nil && x.Owner != nil {
-		return *x.Owner
-	}
-	return ""
-}
-
-func (x *GatePositionChanged) GetPosition() GatePosition {
+func (x *GateStatusChanged) GetPosition() GatePosition {
 	if x != nil {
 		return x.Position
 	}
 	return GatePosition_GATE_POSITION_UNKNOWN
 }
 
-func (x *GatePositionChanged) GetSequence() uint64 {
+func (x *GateStatusChanged) GetPreviousOperatingMode() string {
+	if x != nil && x.PreviousOperatingMode != nil {
+		return *x.PreviousOperatingMode
+	}
+	return ""
+}
+
+func (x *GateStatusChanged) GetOperatingMode() string {
+	if x != nil && x.OperatingMode != nil {
+		return *x.OperatingMode
+	}
+	return ""
+}
+
+func (x *GateStatusChanged) GetObservedBy() string {
+	if x != nil && x.ObservedBy != nil {
+		return *x.ObservedBy
+	}
+	return ""
+}
+
+func (x *GateStatusChanged) GetOccurredAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.OccurredAt
+	}
+	return nil
+}
+
+func (x *GateStatusChanged) GetOwner() string {
+	if x != nil && x.Owner != nil {
+		return *x.Owner
+	}
+	return ""
+}
+
+func (x *GateStatusChanged) GetSequence() uint64 {
 	if x != nil {
 		return x.Sequence
 	}
 	return 0
 }
 
-func (x *GatePositionChanged) GetSource() *v1.WireSource {
+func (x *GateStatusChanged) GetSource() *v1.WireSource {
 	if x != nil {
 		return x.Source
 	}
 	return nil
 }
 
-func (x *GatePositionChanged) GetSourceDeviceId() string {
+func (x *GateStatusChanged) GetSourceDeviceId() string {
 	if x != nil {
 		return x.SourceDeviceId
 	}
@@ -539,28 +539,28 @@ var File_openits_reversible_lane_v1_events_proto protoreflect.FileDescriptor
 
 const file_openits_reversible_lane_v1_events_proto_rawDesc = "" +
 	"\n" +
-	"'openits/reversible_lane/v1/events.proto\x12\x1aopenits.reversible_lane.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a&openits/reversible_lane/v1/types.proto\x1a\x1copenits/types/v1/types.proto\"\xa0\x05\n" +
-	"\x13GatePositionChanged\x12\x12\n" +
+	"'openits/reversible_lane/v1/events.proto\x12\x1aopenits.reversible_lane.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a&openits/reversible_lane/v1/types.proto\x1a\x1copenits/types/v1/types.proto\"\xa4\x05\n" +
+	"\x11GateStatusChanged\x12\x12\n" +
 	"\x04kind\x18c \x01(\tR\x04kind\x12\x17\n" +
 	"\agate_id\x18\x01 \x01(\tR\x06gateId\x12Z\n" +
-	"\x11previous_position\x18\x02 \x01(\x0e2(.openits.reversible_lane.v1.GatePositionH\x00R\x10previousPosition\x88\x01\x01\x12*\n" +
-	"\x0econtrol_source\x18\v \x01(\tH\x01R\rcontrolSource\x88\x01\x01\x12$\n" +
-	"\vobserved_by\x18\x04 \x01(\tH\x02R\n" +
+	"\x11previous_position\x18\x02 \x01(\x0e2(.openits.reversible_lane.v1.GatePositionH\x00R\x10previousPosition\x88\x01\x01\x12D\n" +
+	"\bposition\x18\x03 \x01(\x0e2(.openits.reversible_lane.v1.GatePositionR\bposition\x12;\n" +
+	"\x17previous_operating_mode\x18\x04 \x01(\tH\x01R\x15previousOperatingMode\x88\x01\x01\x12*\n" +
+	"\x0eoperating_mode\x18\x05 \x01(\tH\x02R\roperatingMode\x88\x01\x01\x12$\n" +
+	"\vobserved_by\x18\x06 \x01(\tH\x03R\n" +
 	"observedBy\x88\x01\x01\x12;\n" +
-	"\voccurred_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
-	"occurredAt\x12*\n" +
-	"\x0eoperating_mode\x18\t \x01(\tH\x03R\roperatingMode\x88\x01\x01\x12\x19\n" +
-	"\x05owner\x18\x06 \x01(\tH\x04R\x05owner\x88\x01\x01\x12D\n" +
-	"\bposition\x18\n" +
-	" \x01(\x0e2(.openits.reversible_lane.v1.GatePositionR\bposition\x12\x1a\n" +
-	"\bsequence\x18\a \x01(\x04R\bsequence\x124\n" +
+	"\voccurred_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\n" +
+	"occurredAt\x12\x19\n" +
+	"\x05owner\x18\b \x01(\tH\x04R\x05owner\x88\x01\x01\x12\x1a\n" +
+	"\bsequence\x18\t \x01(\x04R\bsequence\x124\n" +
 	"\x06source\x18d \x01(\v2\x1c.openits.types.v1.WireSourceR\x06source\x12(\n" +
-	"\x10source_device_id\x18\b \x01(\tR\x0esourceDeviceIdB\x14\n" +
-	"\x12_previous_positionB\x11\n" +
-	"\x0f_control_sourceB\x0e\n" +
-	"\f_observed_byB\x11\n" +
-	"\x0f_operating_modeB\b\n" +
-	"\x06_ownerJ\x04\b\x03\x10\x04R\fnew_position\"\xbf\x05\n" +
+	"\x10source_device_id\x18\n" +
+	" \x01(\tR\x0esourceDeviceIdB\x14\n" +
+	"\x12_previous_positionB\x1a\n" +
+	"\x18_previous_operating_modeB\x11\n" +
+	"\x0f_operating_modeB\x0e\n" +
+	"\f_observed_byB\b\n" +
+	"\x06_owner\"\xbf\x05\n" +
 	"\x10LaneStateChanged\x12\x12\n" +
 	"\x04kind\x18c \x01(\tR\x04kind\x12U\n" +
 	"\x0eprevious_state\x18\x01 \x01(\x0e2).openits.reversible_lane.v1.LaneFlowStateH\x00R\rpreviousState\x88\x01\x01\x122\n" +
@@ -645,7 +645,7 @@ func file_openits_reversible_lane_v1_events_proto_rawDescGZIP() []byte {
 
 var file_openits_reversible_lane_v1_events_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_openits_reversible_lane_v1_events_proto_goTypes = []any{
-	(*GatePositionChanged)(nil),   // 0: openits.reversible_lane.v1.GatePositionChanged
+	(*GateStatusChanged)(nil),     // 0: openits.reversible_lane.v1.GateStatusChanged
 	(*LaneStateChanged)(nil),      // 1: openits.reversible_lane.v1.LaneStateChanged
 	(*LcsConflictDetected)(nil),   // 2: openits.reversible_lane.v1.LcsConflictDetected
 	(*TransitionTimeout)(nil),     // 3: openits.reversible_lane.v1.TransitionTimeout
@@ -656,10 +656,10 @@ var file_openits_reversible_lane_v1_events_proto_goTypes = []any{
 	(LcsIndication)(0),            // 8: openits.reversible_lane.v1.LcsIndication
 }
 var file_openits_reversible_lane_v1_events_proto_depIdxs = []int32{
-	4,  // 0: openits.reversible_lane.v1.GatePositionChanged.previous_position:type_name -> openits.reversible_lane.v1.GatePosition
-	5,  // 1: openits.reversible_lane.v1.GatePositionChanged.occurred_at:type_name -> google.protobuf.Timestamp
-	4,  // 2: openits.reversible_lane.v1.GatePositionChanged.position:type_name -> openits.reversible_lane.v1.GatePosition
-	6,  // 3: openits.reversible_lane.v1.GatePositionChanged.source:type_name -> openits.types.v1.WireSource
+	4,  // 0: openits.reversible_lane.v1.GateStatusChanged.previous_position:type_name -> openits.reversible_lane.v1.GatePosition
+	4,  // 1: openits.reversible_lane.v1.GateStatusChanged.position:type_name -> openits.reversible_lane.v1.GatePosition
+	5,  // 2: openits.reversible_lane.v1.GateStatusChanged.occurred_at:type_name -> google.protobuf.Timestamp
+	6,  // 3: openits.reversible_lane.v1.GateStatusChanged.source:type_name -> openits.types.v1.WireSource
 	7,  // 4: openits.reversible_lane.v1.LaneStateChanged.previous_state:type_name -> openits.reversible_lane.v1.LaneFlowState
 	7,  // 5: openits.reversible_lane.v1.LaneStateChanged.new_state:type_name -> openits.reversible_lane.v1.LaneFlowState
 	5,  // 6: openits.reversible_lane.v1.LaneStateChanged.occurred_at:type_name -> google.protobuf.Timestamp
