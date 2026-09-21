@@ -200,11 +200,10 @@ module openits-reversible-lane-types {
     }
     description
       "Physical motion or rest of one warning or barrier gate.
-       Orthogonal to operating mode. Authoritative position lives on
-       the facility gates list, which shares the gate-position-state
-       grouping with gate-position-changed. The per-lane
-       openits-reversible-lane:gate-state leaf is a coarse rollup
-       only and must not disagree with this typedef.";
+       Orthogonal to operating mode. Reported per gate on
+       openits-reversible-lane-events:gate-status-changed. The per-lane
+       openits-reversible-lane:gate-state leaf is a coarse rollup only
+       and must not disagree with this typedef.";
     reference
       "ARC-IT 9.1 Service Package TM16 (Reversible Lane Management).";
   }
@@ -257,7 +256,7 @@ module openits-reversible-lane-types {
       "Gate-scope fault class: a fault attributable to one specific
        warning or barrier gate rather than to the facility. Consumers
        select every gate fault with
-       derived-from-or-self(category, 'reversible-lane-fault-gate');
+       derived-from-or-self(category, 'reversible-lane-fault-gate').
        The shared fault event has no sub-component field, so a
        gate-scope fault names its gate inside fault-id per
        openits-types:fault-entry — distinct simultaneous instances of
@@ -416,8 +415,11 @@ module openits-reversible-lane-types {
   identity reversible-lane-gate-mode {
     base openits-types:operational-mode;
     description
-      "Per-gate operating-mode value, so a reading can dual-class
-       with the cross-service operational-mode axis. Lives on
+      "Per-gate operating-mode value. Derives from
+       openits-types:operational-mode so a consumer can filter gate
+       modes on the cross-service mode axis without enumerating
+       per-service values.
+       Lives on
        gate-status-changed, not on
        openits-common-mode-events:mode-changed, which cannot name a
        sub-component. This base is open: an implementation with a
