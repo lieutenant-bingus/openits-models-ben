@@ -2499,6 +2499,17 @@ messages:
         stage: 4
         strategy_id: 5
         vehicle_id: 3
+    openits.signal_control.v1.Approach:
+        approach_id: 1
+        config: 2
+        movements: 3
+    openits.signal_control.v1.ApproachConfig:
+        approach_id: 1
+        direction: 3
+        heading_deg: 4
+        name: 2
+    openits.signal_control.v1.Approaches:
+        approach: 1
     openits.signal_control.v1.Battery:
         charger_fault: 5
         last_test: 7
@@ -2645,18 +2656,22 @@ messages:
         detector_id: 1
         state: 3
     openits.signal_control.v1.DetectorsDetectorConfig:
+        approach: 15
         assigned_phases: 3
         delay: 5
         delay_s: 12
         detector_id: 1
         diagnostic_thresholds: 14
         diagnostics: 10
+        distance_from_stop_bar_m: 18
         enabled: 4
         extend: 6
         extend_phases: 8
         extend_s: 13
         fail_action: 9
+        lane_number: 17
         mode: 7
+        movements: 16
         name: 11
         type: 2
     openits.signal_control.v1.DetectorsDetectorConfigDiagnosticThresholds:
@@ -2712,6 +2727,16 @@ messages:
         monitor_kind: 5
         observed_at: 6
         status: 4
+    openits.signal_control.v1.Movement:
+        config: 2
+        maneuver: 1
+    openits.signal_control.v1.MovementConfig:
+        maneuver: 1
+        permissive_phase: 4
+        protected_overlap: 3
+        protected_phase: 2
+    openits.signal_control.v1.Movements:
+        movement: 1
     openits.signal_control.v1.OnBatteryPolicy:
         mode: 1
         transition_at_runtime_minutes: 3
@@ -2855,6 +2880,7 @@ messages:
         leading_ped_interval_seconds: 11
         max_green_2: 6
         max_green_2_s: 12
+        name: 15
         options: 7
         phase_number: 1
         red_revert: 9
@@ -2984,6 +3010,7 @@ messages:
     openits.signal_control.v1.Sequences:
         sequence: 1
     openits.signal_control.v1.SignalController:
+        approaches: 18
         cabinet_power: 13
         channels: 10
         config: 1

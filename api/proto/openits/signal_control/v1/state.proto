@@ -13,6 +13,7 @@ message SignalController {
   SignalControllerState state = 2;
   Startup startup = 14;
   Phases phases = 3;
+  Approaches approaches = 18;
   Detectors detectors = 4;
   PedestrianDetectors pedestrian_detectors = 17;
   Overlaps overlaps = 9;
@@ -103,6 +104,7 @@ message PhaseConfig {
   reserved 6, 9, 11;
   reserved "max_green_2", "red_revert", "leading_ped_interval_seconds";
   optional uint32 phase_number = 1;
+  optional string name = 15;
   optional bool enabled = 2;
   uint32 ring = 3;
   uint32 barrier = 4;
@@ -156,6 +158,41 @@ message PhaseState {
   optional uint32 vehicle_interval_elapsed_ms = 7;
 }
 
+message Approaches {
+  repeated Approach approach = 1;
+}
+
+message Approach {
+  optional uint32 approach_id = 1;
+  ApproachConfig config = 2;
+  Movements movements = 3;
+}
+
+message ApproachConfig {
+  optional uint32 approach_id = 1;
+  optional string name = 2;
+  string direction = 3;
+  optional uint32 heading_deg = 4;
+}
+
+message Movements {
+  repeated Movement movement = 1;
+}
+
+message Movement {
+  optional string maneuver = 1;
+  MovementConfig config = 2;
+}
+
+message MovementConfig {
+  optional string maneuver = 1;
+  oneof protected_source {
+    uint32 protected_phase = 2;
+    uint32 protected_overlap = 3;
+  }
+  optional uint32 permissive_phase = 4;
+}
+
 message Detectors {
   repeated DetectorsDetector detector = 1;
 }
@@ -174,6 +211,10 @@ message DetectorsDetectorConfig {
   repeated uint32 assigned_phases = 3;
   optional bool enabled = 4;
   optional string name = 11;
+  optional uint32 approach = 15;
+  repeated string movements = 16;
+  optional uint32 lane_number = 17;
+  optional string distance_from_stop_bar_m = 18;
   optional string delay_s = 12;
   optional string extend_s = 13;
   optional DetectorMode mode = 7;

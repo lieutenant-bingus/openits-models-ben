@@ -48,6 +48,16 @@ module openits-signal-control {
 
   openits-types:openits-version "0.20.0";
 
+  revision 2026-11-06 {
+    description
+      "Add the approaches table: each leg of the intersection, by the
+       direction of the entering traffic, and its movements, each with
+       its protected phase or overlap and permissive phase. Add name to
+       phase config, and approach, movements, lane-number and
+       distance-from-stop-bar-m to detector config. Additive.";
+    reference "SAE J2735 (MapData, SPAT); ATSPM approach and detector configuration.";
+  }
+
   revision 2026-10-20 {
     description
       "Follow the nema-common phase-timing rename (min-green-s,
@@ -878,6 +888,14 @@ module openits-signal-control {
             type openits-nema:phase-number;
             description "Phase identifier within the controller.";
           }
+          leaf name {
+            type string;
+            description
+              "Operator-facing label for this phase (e.g. 'NBT Ph2'). A
+               rendering of the phase number for people, as detector and
+               overlap names are; which approach and movement the phase
+               serves is the approaches table's to say, not this label's.";
+          }
           leaf enabled {
             type boolean;
             default "true";
@@ -1000,6 +1018,130 @@ module openits-signal-control {
       }
     }
 
+    /* ----- approaches (the intersection's legs and movements) ----- */
+    container approaches {
+      openits-types:arc-it-flow
+        "TMC -> Roadway Signal Controller : signal control plan";
+      description
+        "The intersection geometry the controller holds: each leg,
+         named by the direction of the traffic entering on it, and the
+         movements made from it, each with the phase or overlap that
+         serves it. It is what turns 'phase 2' into 'northbound
+         through' and 'detector 31' into 'northbound right, lane 2',
+         which a consumer of phase and detector data otherwise has to
+         guess. A controller that produces SPaT and MAP acts on it,
+         since each MAP lane connection names the signal group that
+         serves it.
+
+         Present when the controller holds the geometry. NTCIP 1202
+         has no approach table, so a controller that does not hold it
+         leaves this empty, and the mapping lives in the operator's own
+         inventory rather than being invented here.";
+      reference
+        "SAE J2735 (MapData: GenericLane, ConnectsToList, AllowedManeuvers;
+         SPAT: signalGroup). ATSPM approach configuration (direction,
+         protected phase, permissive phase, overlap).";
+
+      list approach {
+        key "approach-id";
+        description "One entry per leg of the intersection.";
+
+        leaf approach-id {
+          type leafref { path "../config/approach-id"; }
+          description "Approach number (key).";
+        }
+        container config {
+          description "Intended approach configuration.";
+          leaf approach-id {
+            type openits-sc-types:approach-number;
+            description "Approach number within the controller.";
+          }
+          leaf name {
+            type string;
+            description
+              "Operator-facing label for this approach (e.g. 'Main St
+               northbound'). A rendering of the approach number for
+               people, as detector and overlap names are.";
+          }
+          leaf direction {
+            type identityref { base openits-types:carriageway-direction; }
+            mandatory true;
+            description
+              "Direction of travel of the traffic ENTERING the
+               intersection on this approach: the northbound approach is
+               the south leg. The convention of ATSPM, NEMA phase charts
+               and J2735 ingress lanes.";
+          }
+          leaf heading-deg {
+            type openits-types:heading-degrees;
+            description
+              "Compass heading of the entering traffic, where direction
+               alone is too coarse (a skewed leg). Agrees with
+               direction to within the octant it names.";
+          }
+        }
+
+        container movements {
+          description "The movements made from this approach.";
+          list movement {
+            key "maneuver";
+            description
+              "One entry per maneuver made from this approach. Dual left
+               turns are one movement with two lanes: lanes are a
+               detector's concern, not the movement's.";
+
+            leaf maneuver {
+              type leafref { path "../config/maneuver"; }
+              description "The maneuver (key).";
+            }
+            container config {
+              description "Intended movement configuration.";
+              leaf maneuver {
+                type identityref { base openits-sc-types:maneuver; }
+                description "What the vehicle does at the intersection.";
+              }
+              choice protected-source {
+                description
+                  "The one phase or overlap that gives this movement a
+                   protected green. Absent for a movement that is only
+                   ever permissive.";
+                case phase {
+                  leaf protected-phase {
+                    type leafref {
+                      path "../../../../../../phases/phase/phase-number";
+                      require-instance true;
+                    }
+                    description "Phase giving this movement a protected green.";
+                  }
+                }
+                case overlap {
+                  leaf protected-overlap {
+                    type leafref {
+                      path "../../../../../../overlaps/overlap/overlap-number";
+                      require-instance true;
+                    }
+                    description
+                      "Overlap giving this movement a protected green
+                       (e.g. a right-turn overlap).";
+                  }
+                }
+              }
+              leaf permissive-phase {
+                type leafref {
+                  path "../../../../../../phases/phase/phase-number";
+                  require-instance true;
+                }
+                description
+                  "Phase during which this movement may proceed after
+                   yielding: for a protected-permissive or flashing
+                   yellow arrow left turn, the opposing through phase.";
+              }
+            }
+          }
+        }
+      }
+    }
+
     /* ----- detectors ----- */
     container detectors {
       openits-types:arc-it-flow
@@ -1055,6 +1197,44 @@ module openits-signal-control {
                detector-transition used to carry, which put operator
                inventory on the highest-rate event in the system and
                re-sent it on every actuation.";
+          }
+          leaf approach {
+            type leafref {
+              path "../../../../approaches/approach/approach-id";
+              require-instance true;
+            }
+            description "The approach whose traffic this detector senses.";
+          }
+          leaf-list movements {
+            type leafref {
+              path "../../../../approaches/approach[approach-id = current()/../approach]"
+                 + "/movements/movement/maneuver";
+              require-instance true;
+            }
+            description
+              "The movements of its approach this detector senses: one for
+               a lane-by-lane detector, more for a shared lane or a
+               detector spanning lanes. Needs approach.";
+          }
+          leaf lane-number {
+            type uint8 { range "1..max"; }
+            description
+              "The lane of its approach this detector is in, counted
+               from the median (leftmost lane = 1) in the direction of
+               travel. Absent for a detector spanning lanes.";
+          }
+          leaf distance-from-stop-bar-m {
+            type decimal64 {
+              fraction-digits 1;
+              range "0.0 .. max";
+            }
+            units "meters";
+            description
+              "Distance upstream of the stop bar, to the detection zone's
+               leading edge: 0 for a stop-bar detector, the setback for
+               an advance detector. A consumer cannot tell an advance
+               count from a stop-bar presence call without it.";
+            reference "ATSPM detector configuration (distance from stop bar).";
           }
           leaf delay-s {
             type decimal64 {

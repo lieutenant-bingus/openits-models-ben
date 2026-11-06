@@ -81,6 +81,9 @@ invalid-rsu-spat-enabled-no-intersection.json	SPaT is enabled but advertises no 
 invalid-rsu-spat-unsigned.json	SPaT/MAP broadcasting requires message signing (IEEE 1609.2): enable
 invalid-rsu-tim-broadcast-priority-out-of-range.json	Unsatisfied range - value "12" is out of the allowed range. (Data location "/openits-rsu-events:rsu-tim-broadcast/priority"
 invalid-rsu-tim-window.json	Value "-5" is out of type uint32 min/max bounds. (Data location "/openits-rsu:rsu/messages/tim/active/message[id='tim-bad-window']/config/duration-minutes"
+invalid-sc-approach-missing-direction.json	Mandatory node "direction" instance does not exist.
+invalid-sc-approach-movement-unknown-phase.json	Invalid leafref value "6" - no target instance "../../../../../../phases/phase/phase-number" with the same value.
+invalid-sc-detector-movement-not-on-its-approach.json	Invalid leafref value "openits-signal-control-types:maneuver-left" - no target instance "../../../../approaches/approach[approach-id = current()/../approach]/movements/movement/maneuver" with the same value.
 invalid-spat-broadcast-interval-too-high.json	Unsatisfied range - value "2000" is out of the allowed range. (Data location "/openits-rsu:rsu/messages/spat/config/broadcast-interval"
 invalid-spat-broadcast-interval-too-low.json	Unsatisfied range - value "50" is out of the allowed range. (Data location "/openits-rsu:rsu/messages/spat/config/broadcast-interval"
 invalid-split-below-min-service.json	A phase split must be at least min-green-s + yellow-change-s + red-clear-s

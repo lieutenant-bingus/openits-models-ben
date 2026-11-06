@@ -31,6 +31,15 @@ module openits-signal-control-types {
 
   openits-types:openits-version "0.17.0";
 
+  revision 2026-11-06 {
+    description
+      "Add the approach-number typedef and the maneuver identity
+       hierarchy (maneuver-left, maneuver-through, maneuver-right,
+       maneuver-u-turn) for the signal-control approaches table.
+       Additive.";
+    reference "SAE J2735 (AllowedManeuvers).";
+  }
+
   revision 2026-10-20 {
     description
       "Follow the signal-control no-activity-min rename in the
@@ -1313,6 +1322,13 @@ module openits-signal-control-types {
     description "A priority class not otherwise catalogued; the slot an agency derives from.";
   }
 
+  typedef approach-number {
+    type uint8 { range "1..max"; }
+    description
+      "Controller-local approach number: one leg of the intersection,
+       named by the direction of the traffic entering on it.";
+  }
+
   typedef detector-channel {
     type uint16 { range "1..65535"; }
     description "Controller-local vehicle detector number. Shared by the core detector list key and the detector-transition event.";
@@ -1791,6 +1807,20 @@ module openits-signal-control-types {
   }
   identity channel-vehicle    { base channel-movement; description "Vehicle signal head."; }
   identity channel-pedestrian { base channel-movement; description "Pedestrian signal head."; }
+
+  identity maneuver {
+    description
+      "What a vehicle entering on an approach does at the intersection.
+       Not channel-movement, which names the kind of signal head a
+       load switch drives. An identity so a vendor or agency can derive
+       a finer maneuver (a channelized right, a bus-only through)
+       without a core change.";
+    reference "SAE J2735 (AllowedManeuvers).";
+  }
+  identity maneuver-left    { base maneuver; description "Left turn."; }
+  identity maneuver-through { base maneuver; description "Straight through."; }
+  identity maneuver-right   { base maneuver; description "Right turn."; }
+  identity maneuver-u-turn  { base maneuver; description "U-turn."; }
 
   /* --------------------------------------------------------------
    * Clock time source (identity — vendor-extensible: PTP and newer

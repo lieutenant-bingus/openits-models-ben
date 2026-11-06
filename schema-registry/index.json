@@ -903,7 +903,8 @@
         "2026-10-14",
         "2026-10-16",
         "2026-10-17",
-        "2026-10-20"
+        "2026-10-20",
+        "2026-11-06"
       ],
       "events": [
         "openits.signal-control.cabinet-output-changed.v1",
@@ -936,6 +937,7 @@
         "ATSPM Indiana enumeration",
         "ATSPM Indiana enumeration (HR event-code vocabulary)",
         "ATSPM Indiana enumeration codes 50-54, 131-133, 134-149, 150",
+        "ATSPM approach and detector configuration",
         "IEC 62040 (UPS)",
         "Indiana 173 (fault-unit-flash-status)",
         "Indiana coord-cycle-state",
@@ -985,6 +987,8 @@
         "RFC 7950 §7.18.2",
         "RFC 7950 §7.19",
         "RFC 7950 §7.5.1",
+        "SAE J2735 (AllowedManeuvers)",
+        "SAE J2735 (MapData, SPAT)",
         "docs/04-design-decisions.md (wire-source provenance is selective)"
       ],
       "modules": [
@@ -1008,12 +1012,14 @@
             "2026-10-14",
             "2026-10-16",
             "2026-10-17",
-            "2026-10-20"
+            "2026-10-20",
+            "2026-11-06"
           ],
           "refStd": [
             "ARC-IT 9.1 Service Package TI01",
             "ARC-IT 9.1 Service Package: Traffic Signal Control (SU01) NTCIP 1202 v03 (functional reference only; no wire compat)",
             "ATC Cabinet Standard (CMU)",
+            "ATSPM approach and detector configuration",
             "IEC 62040 (UPS)",
             "Indiana 173 (fault-unit-flash-status)",
             "Indiana coord-cycle-state",
@@ -1047,7 +1053,8 @@
             "RFC 7950 section 7.5.3",
             "RFC 7950 §11",
             "RFC 7950 §7.12",
-            "RFC 7950 §7.5.1"
+            "RFC 7950 §7.5.1",
+            "SAE J2735 (MapData, SPAT)"
           ]
         },
         {
@@ -1091,7 +1098,8 @@
             "2026-10-14",
             "2026-10-16",
             "2026-10-17",
-            "2026-10-20"
+            "2026-10-20",
+            "2026-11-06"
           ],
           "refStd": [
             "ATC Cabinet Standard",
@@ -1116,7 +1124,8 @@
             "NTCIP 1211 (priority-type, PRS outcomes)",
             "RFC 7950 §11",
             "RFC 7950 §7.18.2",
-            "RFC 7950 §7.19"
+            "RFC 7950 §7.19",
+            "SAE J2735 (AllowedManeuvers)"
           ]
         }
       ]
@@ -1523,11 +1532,13 @@
         "2026-10-12",
         "2026-10-13",
         "2026-10-14",
-        "2026-10-16"
+        "2026-10-16",
+        "2026-11-06"
       ],
       "refStd": [
         "ATSPM Indiana enumeration",
         "ATSPM Indiana enumeration (wire-source 'indiana' case)",
+        "ATSPM approach direction (NB, SB, EB, WB, NE, NW, SE, SW)",
         "CloudEvents 1.0 (id)",
         "ITU-T X.733 §8.1.2.3",
         "NTCIP 1201 (global time / time-base)",
@@ -2684,6 +2695,11 @@
         "openits-signal-control/2026-10-20/MANIFEST.json",
         "openits-signal-control/2026-10-20/README.md",
         "openits-signal-control/2026-10-20/schema.yang"
+      ],
+      "2026-11-06": [
+        "openits-signal-control/2026-11-06/MANIFEST.json",
+        "openits-signal-control/2026-11-06/README.md",
+        "openits-signal-control/2026-11-06/schema.yang"
       ]
     },
     "openits-signal-control-coordination-events": {
@@ -2937,6 +2953,11 @@
         "openits-signal-control-types/2026-10-20/MANIFEST.json",
         "openits-signal-control-types/2026-10-20/README.md",
         "openits-signal-control-types/2026-10-20/schema.yang"
+      ],
+      "2026-11-06": [
+        "openits-signal-control-types/2026-11-06/MANIFEST.json",
+        "openits-signal-control-types/2026-11-06/README.md",
+        "openits-signal-control-types/2026-11-06/schema.yang"
       ]
     },
     "openits-traffic-sensor": {
@@ -3066,6 +3087,11 @@
         "openits-types/2026-10-16/MANIFEST.json",
         "openits-types/2026-10-16/README.md",
         "openits-types/2026-10-16/schema.yang"
+      ],
+      "2026-11-06": [
+        "openits-types/2026-11-06/MANIFEST.json",
+        "openits-types/2026-11-06/README.md",
+        "openits-types/2026-11-06/schema.yang"
       ]
     },
     "openits-v2x-messaging": {

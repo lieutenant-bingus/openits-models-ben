@@ -1,0 +1,210 @@
+{
+  "openits-signal-control:signal-controller": {
+    "config": {
+      "id": "asc-example-01",
+      "name": "Main St @ Oak Ave"
+    },
+    "phases": {
+      "phase": [
+        {
+          "phase-number": 2,
+          "config": {
+            "phase-number": 2,
+            "ring": 1,
+            "barrier": 1,
+            "enabled": true,
+            "timing": {
+              "min-green-s": "5.0",
+              "max-green-s": "40.0",
+              "yellow-change-s": "3.5",
+              "red-clear-s": "1.5",
+              "passage-s": "2.0"
+            },
+            "name": "NBT Ph2"
+          }
+        },
+        {
+          "phase-number": 4,
+          "config": {
+            "phase-number": 4,
+            "ring": 1,
+            "barrier": 2,
+            "enabled": true,
+            "timing": {
+              "min-green-s": "5.0",
+              "max-green-s": "40.0",
+              "yellow-change-s": "3.5",
+              "red-clear-s": "1.5",
+              "passage-s": "2.0"
+            },
+            "name": "EBT Ph4"
+          }
+        },
+        {
+          "phase-number": 5,
+          "config": {
+            "phase-number": 5,
+            "ring": 2,
+            "barrier": 1,
+            "enabled": true,
+            "timing": {
+              "min-green-s": "5.0",
+              "max-green-s": "40.0",
+              "yellow-change-s": "3.5",
+              "red-clear-s": "1.5",
+              "passage-s": "2.0"
+            },
+            "name": "NBL Ph5"
+          }
+        }
+      ]
+    },
+    "overlaps": {
+      "overlap": [
+        {
+          "overlap-number": 1,
+          "config": {
+            "overlap-number": 1,
+            "name": "NB right overlap",
+            "type": "openits-signal-control-types:overlap-normal",
+            "included-phases": [
+              2,
+              4
+            ]
+          }
+        }
+      ]
+    },
+    "approaches": {
+      "approach": [
+        {
+          "approach-id": 1,
+          "config": {
+            "approach-id": 1,
+            "name": "Main St northbound",
+            "direction": "openits-types:direction-northbound",
+            "heading-deg": 2
+          },
+          "movements": {
+            "movement": [
+              {
+                "maneuver": "openits-signal-control-types:maneuver-through",
+                "config": {
+                  "maneuver": "openits-signal-control-types:maneuver-through",
+                  "protected-phase": 2
+                }
+              },
+              {
+                "maneuver": "openits-signal-control-types:maneuver-left",
+                "config": {
+                  "maneuver": "openits-signal-control-types:maneuver-left",
+                  "protected-phase": 5,
+                  "permissive-phase": 2
+                }
+              },
+              {
+                "maneuver": "openits-signal-control-types:maneuver-right",
+                "config": {
+                  "maneuver": "openits-signal-control-types:maneuver-right",
+                  "protected-overlap": 1
+                }
+              }
+            ]
+          }
+        },
+        {
+          "approach-id": 2,
+          "config": {
+            "approach-id": 2,
+            "name": "Oak Ave northeastbound",
+            "direction": "openits-types:direction-northeastbound",
+            "heading-deg": 58
+          },
+          "movements": {
+            "movement": [
+              {
+                "maneuver": "openits-signal-control-types:maneuver-through",
+                "config": {
+                  "maneuver": "openits-signal-control-types:maneuver-through",
+                  "protected-phase": 6
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "detectors": {
+      "detector": [
+        {
+          "detector-id": 1,
+          "config": {
+            "detector-id": 1,
+            "type": "openits-signal-control-types:detector-inductive-loop",
+            "assigned-phases": [
+              2
+            ],
+            "name": "NBT lane 2 stop bar",
+            "approach": 1,
+            "movements": [
+              "openits-signal-control-types:maneuver-through"
+            ],
+            "lane-number": 2,
+            "distance-from-stop-bar-m": "0.0"
+          }
+        },
+        {
+          "detector-id": 2,
+          "config": {
+            "detector-id": 2,
+            "type": "openits-signal-control-types:detector-inductive-loop",
+            "assigned-phases": [
+              5
+            ],
+            "name": "NBL stop bar",
+            "approach": 1,
+            "movements": [
+              "openits-signal-control-types:maneuver-left"
+            ],
+            "lane-number": 1,
+            "distance-from-stop-bar-m": "0.0"
+          }
+        },
+        {
+          "detector-id": 3,
+          "config": {
+            "detector-id": 3,
+            "type": "openits-signal-control-types:detector-inductive-loop",
+            "assigned-phases": [
+              2
+            ],
+            "name": "NB through-right shared lane",
+            "approach": 1,
+            "movements": [
+              "openits-signal-control-types:maneuver-through",
+              "openits-signal-control-types:maneuver-right"
+            ],
+            "lane-number": 3,
+            "distance-from-stop-bar-m": "0.0"
+          }
+        },
+        {
+          "detector-id": 4,
+          "config": {
+            "detector-id": 4,
+            "type": "openits-signal-control-types:detector-inductive-loop",
+            "assigned-phases": [
+              4
+            ],
+            "name": "EB advance",
+            "approach": 2,
+            "movements": [
+              "openits-signal-control-types:maneuver-through"
+            ],
+            "distance-from-stop-bar-m": "76.2"
+          }
+        }
+      ]
+    }
+  }
+}

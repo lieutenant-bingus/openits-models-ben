@@ -20,6 +20,15 @@ module openits-types {
 
   openits-types:openits-version "0.14.0";
 
+  revision 2026-11-06 {
+    description
+      "Add the diagonal carriageway directions direction-northeastbound,
+       direction-northwestbound, direction-southeastbound and
+       direction-southwestbound, for an approach on a diagonal street.
+       Additive.";
+    reference "ATSPM approach direction (NB, SB, EB, WB, NE, NW, SE, SW).";
+  }
+
   revision 2026-10-16 {
     description
       "Add the oper-status typedef, the device-health and
@@ -809,6 +818,30 @@ module openits-types {
   identity direction-southbound { base carriageway-direction; description "Traffic traveling south."; }
   identity direction-eastbound  { base carriageway-direction; description "Traffic traveling east."; }
   identity direction-westbound  { base carriageway-direction; description "Traffic traveling west."; }
+  identity direction-northeastbound {
+    base carriageway-direction;
+    description
+      "Traffic traveling northeast: a diagonal street, where neither
+       northbound nor eastbound names the carriageway without a
+       guess. WZDx has no diagonal value; a WZDx translator maps it to
+       the cardinal direction the agency's own feed uses for the road.";
+    reference "ATSPM approach direction (NE).";
+  }
+  identity direction-northwestbound {
+    base carriageway-direction;
+    description "Traffic traveling northwest; see direction-northeastbound.";
+    reference "ATSPM approach direction (NW).";
+  }
+  identity direction-southeastbound {
+    base carriageway-direction;
+    description "Traffic traveling southeast; see direction-northeastbound.";
+    reference "ATSPM approach direction (SE).";
+  }
+  identity direction-southwestbound {
+    base carriageway-direction;
+    description "Traffic traveling southwest; see direction-northeastbound.";
+    reference "ATSPM approach direction (SW).";
+  }
   identity direction-inner-loop {
     base carriageway-direction;
     description
